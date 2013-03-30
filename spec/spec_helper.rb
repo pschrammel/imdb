@@ -1,20 +1,4 @@
-# By default if you have the FakeWeb gem installed when the specs are
-# run they will hit recorded responses.  However, if you don't have
-# the FakeWeb gem installed or you set the environment variable
-# LIVE_TEST then the tests will hit the live site IMDB.com.
-#
-# Having both methods available for testing allows you to quickly
-# refactor and add features, while also being able to make sure that
-# no changes to the IMDB.com interface have affected the parser.
-###
-
-begin
-  require 'spec'
-rescue LoadError
-  require 'rubygems'
-  gem 'rspec'
-  require 'spec'
-end
+require 'fakeweb'
 
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'imdb'
@@ -42,16 +26,8 @@ IMDB_SAMPLES = {
 }
 
 unless ENV['LIVE_TEST']
-  begin
-    require 'rubygems'
-    require 'fakeweb'
-    
-    FakeWeb.allow_net_connect = false
-    IMDB_SAMPLES.each do |url, response|
-      FakeWeb.register_uri(:get, url, :response => read_fixture(response))
-    end
-  rescue LoadError
-    puts "Could not load FakeWeb, these tests will hit IMDB.com"
-    puts "You can run `gem install fakeweb` to stub out the responses."
+  FakeWeb.allow_net_connect = false
+  IMDB_SAMPLES.each do |url, response|
+    FakeWeb.register_uri(:get, url, :response => read_fixture(response))
   end
 end
