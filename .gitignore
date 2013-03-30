@@ -1,2 +1,5 @@
 pkg/*
 doc/*
+.ruby-gemset
+.ruby-version
+Gemfile.lock
