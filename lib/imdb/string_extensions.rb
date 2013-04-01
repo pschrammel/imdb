@@ -6,11 +6,11 @@ module Imdb #:nordoc:
     # Unescape HTML
     require 'iconv'
     def imdb_unescape_html
-      Iconv.conv("UTF-8", 'ISO-8859-1', CGI::unescapeHTML(self))
+      Iconv.conv("UTF-8", 'ISO-8859-1', CGI::unescapeHTML(self)).strip
     end
     else
     def imdb_unescape_html
-      encode(Encoding::UTF_8, :invalid => :replace, :undef => :replace, :replace => '')
+      CGI::unescapeHTML(self).encode(Encoding::UTF_8, :invalid => :replace, :undef => :replace, :replace => '').strip
     end
   end
     # Strip tags

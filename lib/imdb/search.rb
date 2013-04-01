@@ -23,11 +23,11 @@ module Imdb
     
     private
     def document
-      @document ||= Hpricot(Imdb::Search.query(@query))
+      @document ||= Nokogiri::HTML(Imdb::Search.query(@query))
     end
     
     def self.query(query)
-      Imdb::Utils.get_page("/find?q=#{CGI::escape(query)};s=tt")
+      Imdb::Utils.get_page("/find?q=#{CGI::escape(query)}&s=tt")
     end
     
     def parse_movie
@@ -37,7 +37,7 @@ module Imdb
     
     # Returns true if the search yielded only one result, an exact match
     def exact_match?
-      !document.at("div.star-box").nil?
+      !document.css(".star-box-giga-star").empty?
     end
     
   end # Search

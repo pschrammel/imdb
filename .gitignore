@@ -4,3 +4,4 @@ doc/*
 .ruby-version
 Gemfile.lock
 rdoc
+.idea
